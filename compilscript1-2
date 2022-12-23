@@ -1,0 +1,44 @@
+#!/bin/bash
+ > temp.txt
+ > date.txt
+ > rooms.txt
+ > valeurs.txt
+let min=max=0
+while true; do  
+ mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
+ lignes=`wc -l < temp.txt | cut -d ' ' -f 1`
+ date +%x-%X >> date.txt
+ tail -1 temp.txt | cut -d '"' -f 4 >> rooms.txt
+ tail -1 temp.txt | cut -d ':' -f 3 | sed 's/}//' >> valeurs.txt
+
+ vfin=`tail -1 valeurs.txt`
+ nbr_total=`wc -l < temp.txt | cut -d ' ' -f 1 `
+ let somme=$somme+$vfin
+ echo $vfin
+ if [ $max == 0 ] || [ $min == 0 ];then
+  max=$vfin
+  min=$vfin
+ fi
+ if [ $vfin -gt $max ];then
+  max=$vfin
+ fi
+ if [ $vfin -lt $min ];then
+  min=$vfin
+ fi
+ let moyenne=$somme/$nbr_total
+ echo "La somme de toutes les valeurs est : $somme"
+ echo "La moyenne de toutes les valeurs est : $moyenne"
+ echo "Le minimum de toutes les valeurs est : $min"
+ echo "Le maximums de toutes les valeurs est : $max"
+
+ if [ $lignes -gt 20 ]; then
+  cp temp.txt archive.txt
+  cp date.txt datarchive.txt
+  cp rooms.txt roomsarchive.txt
+  cp valeurs.txt valeursarchive.txt
+  > temp.txt
+  > date.txt
+  > rooms.txt
+  > valeurs.txt
+ fi
+done
