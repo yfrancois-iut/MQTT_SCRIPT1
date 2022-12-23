@@ -23,12 +23,25 @@ while true; do
  if [ $max == 0 ] || [ $min == 0 ];then
   max=$vfin
   min=$vfin
+  record=`date +%x-%X`
+  echo "Maximum historique atteint pour la valeur de $max le $record." > extremp.txt
+  echo "Minimum historique atteint pour la valeur de $min le $record." > extremm.txt
  fi
  if [ $vfin -gt $max ];then
   max=$vfin
+  test=`cut -d " " -f 8 extremp.txt`
+  if [ $max > $test ];then
+   record=`date +%x-%X`
+   echo "Maximum historique atteint pour la valeur de $max le $record." > extremp.txt
+  fi
  fi
  if [ $vfin -lt $min ];then
   min=$vfin
+  test=`cut -d " " -f 8 extremm.txt`
+  if [ $min > $test ];then
+   record=`date +%x-%X`
+   echo "Minimum historique atteint pour la valeur de $min le $record." > extremm.txt
+  fi
  fi
  testsalle=`tail -1 rooms.txt`
  if [ $testsalle  == 'E101' ];then
