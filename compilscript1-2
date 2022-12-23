@@ -3,6 +3,7 @@
  > date.txt
  > rooms.txt
  > valeurs.txt
+ > moyenne.txt
 let min=max=0
 while true; do  
  mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
@@ -30,15 +31,18 @@ while true; do
  echo "La moyenne de toutes les valeurs est : $moyenne"
  echo "Le minimum de toutes les valeurs est : $min"
  echo "Le maximums de toutes les valeurs est : $max"
+ echo "$moyenne, $min, $max" >> moyenne.txt
 
  if [ $lignes -gt 20 ]; then
   cp temp.txt archive.txt
   cp date.txt datarchive.txt
   cp rooms.txt roomsarchive.txt
   cp valeurs.txt valeursarchive.txt
+  cp moyenne.txt moyennearchive.txt
   > temp.txt
   > date.txt
   > rooms.txt
   > valeurs.txt
+  > moyenne.txt
  fi
 done
