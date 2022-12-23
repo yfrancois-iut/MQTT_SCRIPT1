@@ -1,5 +1,6 @@
 !/bin/bash
 let min=max=0
+cat archive.txt | cut -d '"' -f 4 > rooms.txt
 cat archive.txt | cut -d ':' -f 3 | sed 's/}//' > valeurs.txt
 nbr_total=`wc -l < archive.txt | cut -d ' ' -f 1 `
 while IFS="" read -r p || [ -n "$p" ]
