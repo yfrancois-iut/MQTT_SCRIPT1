@@ -6,7 +6,7 @@
  > moyenne.txt
  > valeur101.txt
  > valeur102.txt
-let min=max=0
+let min=max=min1=min2=max1=max2=0
 while true; do  
  mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
  lignes=`wc -l < temp.txt | cut -d ' ' -f 1`
