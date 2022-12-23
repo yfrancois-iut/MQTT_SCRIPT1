@@ -6,8 +6,10 @@
  > moyenne.txt
  > valeur101.txt
  > valeur102.txt
+ > moyenne1.txt
+ > moyenne2.txt
 let min=max=min1=min2=max1=max2=0
-while true; do  
+while true; do
  mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
  lignes=`wc -l < temp.txt | cut -d ' ' -f 1`
  date +%x-%X >> date.txt
@@ -31,9 +33,43 @@ while true; do
  testsalle=`tail -1 rooms.txt`
  if [ $testsalle  == 'E101' ];then
   tail -1 valeurs.txt >> valeur101.txt
+  vfin1=`tail -1 valeur101.txt`
+  nbr_total1=`wc -l < valeur101.txt | cut -d ' ' -f 1 `
+  let somme1=$somme1+$vfin1
+  echo "valeur e101 $vfin1"
+  if [ $max1 == 0 ] || [ $min1 == 0 ];then
+   max1=$vfin1
+   min1=$vfin1
+  fi
+  if [ $vfin1 -gt $max1 ];then
+   max1=$vfin1
+  fi
+  if [ $vfin1 -lt $min1 ];then
+   min1=$vfin1
+  fi
+  let moyenne1=$somme1/$nbr_total1
+  echo "$moyenne1, $min1, $max1" >> moyenne1.txt
+
  else
   tail -1 valeurs.txt >> valeur102.txt
+  vfin2=`tail -1 valeur102.txt`
+  nbr_total2=`wc -l < valeur102.txt | cut -d ' ' -f 1 `
+  let somme2=$somme2+$vfin2
+  echo "valeur e102 $vfin2"
+  if [ $max2 == 0 ] || [ $min2 == 0 ];then
+   max2=$vfin2
+   min2=$vfin2
+  fi
+  if [ $vfin2 -gt $max2 ];then
+   max2=$vfin2
+  fi
+  if [ $vfin2 -lt $min2 ];then
+   min2=$vfin2
+  fi
+  let moyenne2=$somme2/$nbr_total2
+  echo "$moyenne2, $min2, $max2" >> moyenne2.txt
  fi
+
  let moyenne=$somme/$nbr_total
  echo "La somme de toutes les valeurs est : $somme"
  echo "La moyenne de toutes les valeurs est : $moyenne"
@@ -54,5 +90,7 @@ while true; do
   > rooms.txt
   > valeurs.txt
   > moyenne.txt
+  > moyenne1.txt
+  > moyenne2.txt
  fi
 done
