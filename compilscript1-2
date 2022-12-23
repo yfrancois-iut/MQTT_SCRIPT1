@@ -4,6 +4,8 @@
  > rooms.txt
  > valeurs.txt
  > moyenne.txt
+ > valeur101.txt
+ > valeur102.txt
 let min=max=0
 while true; do  
  mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
@@ -26,6 +28,12 @@ while true; do
  if [ $vfin -lt $min ];then
   min=$vfin
  fi
+ testsalle=`tail -1 rooms.txt`
+ if [ $testsalle  == 'E101' ];then
+  tail -1 valeurs.txt >> valeur101.txt
+ else
+  tail -1 valeurs.txt >> valeur102.txt
+ fi
  let moyenne=$somme/$nbr_total
  echo "La somme de toutes les valeurs est : $somme"
  echo "La moyenne de toutes les valeurs est : $moyenne"
@@ -40,6 +48,8 @@ while true; do
   cp valeurs.txt valeursarchive.txt
   cp moyenne.txt moyennearchive.txt
   > temp.txt
+  > valeur101.txt
+  > valeur102.txt
   > date.txt
   > rooms.txt
   > valeurs.txt
