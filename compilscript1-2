@@ -8,6 +8,12 @@
  > valeur102.txt
  > moyenne1.txt
  > moyenne2.txt
+ > extremp.txt
+ > extremp1.txt
+ > extremp2.txt
+ > extremm.txt
+ > extremm1.txt
+ > extremm2.txt
 let min=max=min1=min2=max1=max2=0
 while true; do
  mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite >> temp.txt
@@ -53,12 +59,25 @@ while true; do
   if [ $max1 == 0 ] || [ $min1 == 0 ];then
    max1=$vfin1
    min1=$vfin1
+   record=`date +%x-%X`
+   echo "Maximum historique atteint pour la valeur de $max1 le $record." > extremp1.txt
+   echo "Minimum historique atteint pour la valeur de $min1 le $record." > extremm1.txt
   fi
   if [ $vfin1 -gt $max1 ];then
    max1=$vfin1
+   test=`cut -d " " -f 8 extremp1.txt`
+   if [ $max1 > $test ];then
+    record=`date +%x-%X`
+    echo "Maximum historique atteint pour la valeur de $max1 le $record." > extremp1.txt
+   fi
   fi
   if [ $vfin1 -lt $min1 ];then
    min1=$vfin1
+   test=`cut -d " " -f 8 extremm1.txt`
+   if [ $min1 > $test ];then
+    record=`date +%x-%X`
+    echo "Minimum historique atteint pour la valeur de $min1 le $record." > extremm1.txt
+   fi
   fi
   let moyenne1=$somme1/$nbr_total1
   echo "$moyenne1, $min1, $max1" >> moyenne1.txt
@@ -72,12 +91,25 @@ while true; do
   if [ $max2 == 0 ] || [ $min2 == 0 ];then
    max2=$vfin2
    min2=$vfin2
+   record=`date +%x-%X`
+   echo "Maximum historique atteint pour la valeur de $max2 le $record." > extremp2.txt
+   echo "Minimum historique atteint pour la valeur de $min2 le $record." > extremm2.txt
   fi
   if [ $vfin2 -gt $max2 ];then
    max2=$vfin2
+   test=`cut -d " " -f 8 extremp2.txt`
+   if [ $max2 > $test ];then
+    record=`date +%x-%X`
+    echo "Maximum historique atteint pour la valeur de $max2 le $record." > extremp2.txt
+   fi
   fi
   if [ $vfin2 -lt $min2 ];then
    min2=$vfin2
+   test=`cut -d " " -f 8 extremm2.txt`
+   if [ $min2 > $test ];then
+    record=`date +%x-%X`
+    echo "Minimum historique atteint pour la valeur de $min2 le $record." > extremm2.txt
+   fi
   fi
   let moyenne2=$somme2/$nbr_total2
   echo "$moyenne2, $min2, $max2" >> moyenne2.txt
@@ -105,5 +137,11 @@ while true; do
   > moyenne.txt
   > moyenne1.txt
   > moyenne2.txt
+  > extremp.txt
+  > extremp1.txt
+  > extremp2.txt
+  > extremm.txt
+  > extremm1.txt
+  > extremm2.txt
  fi
 done
