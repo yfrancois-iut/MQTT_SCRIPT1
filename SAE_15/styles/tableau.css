@@ -1,0 +1,41 @@
+table
+{
+ width: 400px;
+ border: 1px solid black;
+ border-collapse: collapse;
+ background-color: white;
+}
+
+caption.Titre1
+{
+background-color: #475236;
+color: white;
+font-weight: bold;
+padding: 10px;
+}
+
+td
+{
+border: 1px solid black;
+padding: 5px;
+}
+
+th
+{
+background-color: #6f8054;
+border: 1px solid black;
+color: white;
+padding: 10px
+}
+
+td.droite
+{
+	text-align: right;
+	padding-right: 15px;
+	width: 100px;
+}
+
+td.gauche
+{
+	padding-left: 15px;
+}

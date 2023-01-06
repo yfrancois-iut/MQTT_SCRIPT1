@@ -1,0 +1,511 @@
+/*Balises générales concernant l'ensemble des pages*/
+body
+{
+	padding-top: 115px;
+	padding-bottom: 50px;
+	margin : 0;
+	background-color: #e7e1ef;
+}
+
+header 
+{
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+  background-color: #475236;
+  color : white;
+}
+
+section 
+{
+  padding-top: 35px;	
+  padding-left: 20px;
+  padding-right: 15px;
+}
+
+nav ul li 
+{
+  overflow: hidden;
+  float: left;
+  width: 33.333%;
+  list-style: none;
+}
+
+nav ul li:last-child
+{
+	text-align: right;
+}
+
+nav ul li:first-child
+{
+	text-align: left;
+}
+
+nav ul li a 
+{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 0px;
+  text-decoration: none;
+}
+
+.navigation
+{
+  padding-left: 0;
+  margin-left: 0;
+}
+
+h1
+{ 
+  text-align: center;
+}
+
+h3
+{
+  text-align: center;
+  font-size: x-large;
+}
+
+ul li h2
+{
+  list-style: none;
+}
+
+aside#last 
+{
+  padding-top: 25px;  
+  padding-left: 20px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  clear: both;
+}
+
+aside a
+{
+  text-decoration: none;
+}
+
+aside img
+{
+  border:0;
+  width:88px;
+  height:31px;
+}
+
+footer 
+{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 2px;
+  padding: 0px;
+  background-color: #475236;
+  color: white;
+  text-align: center;
+}
+
+footer ul li
+{
+  float: left;
+  width:33%;
+  list-style-type: none;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+footer ul li:first-child
+{
+  text-align: left;
+}
+
+footer ul li:last-child
+{
+  text-align: right;
+}
+
+footer ul
+{
+  margin: 0;
+  padding: 10px;
+}
+
+.flex
+{
+  display: flex;
+  align-items: center;
+}
+
+.lienfooter
+{
+  color: white;
+  text-decoration: none;
+}
+
+img
+{
+  max-width: 100%;
+}
+
+/*Sous-lignage des éléments de la liste du nav*/
+
+.hover_anim
+{
+  display: block;
+  position: relative;
+}
+
+.hover_anim:after
+{
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  top: 34px;
+  right: 0px;
+  background-color: #ffff;
+}
+
+.hover_anim:hover:after 
+{
+  transform: scaleX(1);
+}
+
+/*Balises spécifiques*/
+
+
+/*Paragraphes introductifs page d'accueil*/
+
+.Introduction
+{
+  font-size: x-large;
+  text-align: justify;
+}
+
+.def
+{
+  font-size: large;
+}
+
+/*Expérience : Expériences professionnelles*/
+.logo
+{
+  display: block;
+  width: 100%;
+  float: left;
+  clear: both;
+}
+
+.dimension
+{
+ float: left;
+ clear: right;
+}
+
+.dimension img
+{
+  width: 200px;
+  height: 200px;
+  box-shadow:8px 8px 10px 0 rgba(0,0,0,0.5);
+}
+
+.image_droite
+{
+float: right;
+clear: both;
+}
+
+.image_droite img
+{
+  width: 250px;
+  height: 200px;
+  box-shadow:-8px 8px 10px 0 rgba(0,0,0,0.5);
+  clear: both;
+}
+
+.texted
+{
+border: 1px solid #000000;
+float: right;
+padding: 10px;
+margin-right: 1em;
+width: 600px;
+text-align: justify;
+font-size: x-large;
+}
+
+.texteg
+{
+border: 1px solid #000000;
+float: left;
+padding: 10px;
+margin-left: 1em;
+width: 600px;
+text-align: justify;
+font-size: x-large;
+}
+
+/*Expérience : Certifications*/
+.certif h3
+{
+  padding: 80px;
+}
+
+.certif img
+{
+  width:  200px;
+  height: 200px;
+  margin: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.deplacimages
+{
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding-bottom: 50px;
+}
+
+.certif
+{
+  text-align: center;
+  display: inline-block;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
+
+/*About me : Profile Picture*/
+.tete
+{
+  height: 250px;
+  width: 180px;
+  float: left;
+}
+
+.textetete
+{
+  float: left;
+  margin-left: 1em;
+  width: 80%;
+  padding-top: 1%;
+}
+
+/*About me : video + page*/
+.suite
+{
+  clear: both;
+}
+
+.aboutme
+{
+  font-size: x-large;
+  text-align: justify;
+}
+
+/*capteurs*/
+.capteurs
+{
+  font-size: x-large;
+}
+
+/*Mentions légales*/
+.mentions_legales
+{
+  font-size: x-large;
+}
+
+ol li::marker
+{
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/*Aspect technique*/
+
+.Aspect_technique
+{
+  padding-top: 25px;
+  font-size: x-large;
+  text-align: justify;
+}
+
+.Aspect_technique h2
+{
+  font-size: 1.3em;
+}
+
+.Aspect_technique img:not(.planimg)
+{
+  max-width: 80%;
+  height: auto;
+}
+
+.portrait
+{
+  width: 30%;
+  height: 30%;
+  float: left;
+  padding:  5px;
+}
+
+.paysage
+{
+  width: 60%;
+  height: 60%;
+  padding: 5px;
+}
+
+.suite
+{
+  clear: both;
+}
+
+/* max-width pour faibles résolutions */
+@media screen and (max-width: 600px) 
+{
+  body
+  {
+    padding-top: 50px !important;
+  }
+
+  h1
+  {
+    margin: 0 !important;
+    padding-top: 5px;
+  }
+
+  p.hover_anim
+  {
+    height: 0;
+  }
+
+  header
+  {
+    padding-bottom: 13px;
+  }
+
+  nav ul li 
+  {
+    width: 100%;
+    border: none;
+    font-size: x-small;
+  }
+
+  nav ul li a 
+  {
+    display: block;
+    color: white;
+    text-align: center;
+    border-right: none;
+    text-decoration: none;
+  }
+
+  nav ul li a:hover
+  {
+    color: #22780f;
+  }
+
+  img 
+  {
+    max-width: 80%;
+    height: auto;
+  }
+
+  h1
+  {
+    font-size: x-large;
+  }
+
+    footer
+  {
+    font-size: x-small;
+  }
+
+/*Accueil RWD*/
+
+  .Introduction
+  {
+    font-size: large;
+  }
+
+  .Introduction h2
+  {
+    font-size: x-large;
+  }
+
+  .def
+  {
+    font-size: small !important;
+  }
+
+/*Expérience RWD*/
+  .Experience
+  {
+    padding-top: 140px;
+  }
+
+  .texted
+  {
+    width: auto;
+    overflow: hidden;
+  }
+
+  .texteg
+  {
+    width: auto;
+    overflow: hidden;
+  }
+
+/*Aboutme RWD*/
+  .aboutme
+  {
+    padding-top: 140px;
+    font-size: large;
+  }
+
+  .aboutme h2
+  {
+    font-size: x-large;
+  }
+
+/*capteurs RWD*/
+  .capteurs
+  {
+    padding-top: 140px;
+    font-size: large;
+  }
+
+  .capteurs h2
+  {
+    font-size: x-large;
+  }
+
+/*Aspect technique RWD*/
+  .Aspect_technique
+  {
+    padding-top: 120px;
+    font-size: large;
+  }
+
+  .Aspect_technique h2
+  {
+    font-size: x-large;
+  }
+
+/*Mentions légales RWD*/
+  .mentions_legales
+  {
+    padding-top: 110px;
+    font-size: large;
+  }
+
+  .mentions_legales h2
+  {
+    font-size: x-large;
+  }
+}
