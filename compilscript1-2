@@ -1,4 +1,7 @@
 #!/bin/bash
+#When redeemed, the code is still under development. They are improvements to make in terms of optimization. The comment about the code isn't available yet since 
+#I wrote all of it on the github page dedicated to the project. The file is shared so far as to show the progress that has been made. The choice was made as
+#to use files in which I would store the data over time. There are debugging features that help to show how the file behaves, usually echoing the content of a file.
  > temp.txt
  > date.txt
  > rooms.txt
