@@ -1,8 +1,4 @@
 #!/bin/bash
-#When redeemed, the code is still under development. They are improvements to make in terms of optimization. The comment about the code isn't available yet since 
-#I wrote all of it on the github page dedicated to the project. The file is shared so far as to show the progress that has been made. The choice was made as
-#to use files in which I would store the data over time. There are debugging features that help to show how the file behaves, usually echoing the content of a file.
-#The script works fine.
  > temp.txt
  > date.txt
  > rooms.txt
@@ -40,7 +36,7 @@ while true; do
  if [ $vfin -gt $max ];then
   max=$vfin
   test=`cut -d " " -f 8 extremp.txt`
-  if [ $max > $test ];then
+  if [ $max \> $test ];then
    record=`date +%x-%X`
    echo "Maximum historique atteint pour la valeur de $max le $record." > extremp.txt
   fi
@@ -48,7 +44,7 @@ while true; do
  if [ $vfin -lt $min ];then
   min=$vfin
   test=`cut -d " " -f 8 extremm.txt`
-  if [ $min > $test ];then
+  if [ $min \> $test ];then
    record=`date +%x-%X`
    echo "Minimum historique atteint pour la valeur de $min le $record." > extremm.txt
   fi
@@ -70,7 +66,7 @@ while true; do
   if [ $vfin1 -gt $max1 ];then
    max1=$vfin1
    test=`cut -d " " -f 8 extremp1.txt`
-   if [ $max1 > $test ];then
+   if [ $max1 \> $test ];then
     record=`date +%x-%X`
     echo "Maximum historique atteint pour la valeur de $max1 le $record." > extremp1.txt
    fi
@@ -78,7 +74,7 @@ while true; do
   if [ $vfin1 -lt $min1 ];then
    min1=$vfin1
    test=`cut -d " " -f 8 extremm1.txt`
-   if [ $min1 > $test ];then
+   if [ $min1 \> $test ];then
     record=`date +%x-%X`
     echo "Minimum historique atteint pour la valeur de $min1 le $record." > extremm1.txt
    fi
@@ -102,7 +98,7 @@ while true; do
   if [ $vfin2 -gt $max2 ];then
    max2=$vfin2
    test=`cut -d " " -f 8 extremp2.txt`
-   if [ $max2 > $test ];then
+   if [ $max2 \> $test ];then
     record=`date +%x-%X`
     echo "Maximum historique atteint pour la valeur de $max2 le $record." > extremp2.txt
    fi
@@ -110,7 +106,7 @@ while true; do
   if [ $vfin2 -lt $min2 ];then
    min2=$vfin2
    test=`cut -d " " -f 8 extremm2.txt`
-   if [ $min2 > $test ];then
+   if [ $min2 \> $test ];then
     record=`date +%x-%X`
     echo "Minimum historique atteint pour la valeur de $min2 le $record." > extremm2.txt
    fi
