@@ -8,6 +8,7 @@
 salle=()
 valeur=()
 date=()
+let somme_moyenne=somme=maximum=minimum=0
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
 while true; do
@@ -23,7 +24,33 @@ while true; do
  ajout_date=`date +%x-%X`
  date+=($ajout_date)
 #This down below is a debugging feature that prints the three arrays to make sure that the previous commands do what they are supposed to do.
- echo ${salle[*]}
- echo ${valeur[*]}
- echo ${date[*]}
+ echo ${salle[@]}
+ echo ${valeur[@]}
+ echo ${date[@]}
+ for champ in ${valeur[@]}; do
+  if [ $maximum -eq 0 ] || [ $minimum -eq 0 ];then
+   maximum=$champ
+   minimum=$champ
+  fi
+  if [ $champ -gt $maximum ];then
+   maximum=$champ
+  fi
+  if [ $champ -lt $minimum ];then
+   minimum=$champ
+  fi
+ done
+ if [ ${#valeur[@]} -gt 1 ];then
+  let i=i+1
+ else
+  i=0
+ fi
+ echo "i = $i"
+ let somme_moyenne=$somme_moyenne+${valeur[i]}
+ echo "somme_moyenne : $somme_moyenne"
+ echo "Voici le maximum : $maximum"
+ echo "Voici le minimum : $minimum"
+ somme=${#valeur[@]}
+ echo "Voici la somme : $somme"
+ let moyenne=$somme_moyenne/$somme
+ echo "Voici la moyenne : $moyenne"
 done
