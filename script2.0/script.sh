@@ -4,11 +4,22 @@
 #Parsing json from broker with jq and storing data inside lists allows for easier explanations and access to curl towards the HTML page.
 #Mr. FRANCOIS
 
+#Fonction ajoutant les valeurs instantanées au sein du premier tableau
+fonction_tableau1_site() {
+ luminosite=$1
+ salle=$2
+ date=$3
+ fichier='./capteurs.html'
+ balise='<!--Tab1-->'
+ ligne=$(echo '<td class ="gauche">'$luminosite'</td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
+ sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t\t$ligne#" $fichier
+}
+
 #Initializing the arrays that are going to hold key values for the website.
 salle=()
 valeur=()
 date=()
-let somme_moyenne=somme=maximum=minimum=0
+let i=somme_moyenne=somme=maximum=minimum=0
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
 while true; do
@@ -59,4 +70,5 @@ while true; do
  echo "Voici la somme : $somme"
  let moyenne=$somme_moyenne/$somme
  echo "Voici la moyenne : $moyenne"
+ fonction_tableau1_site ${valeur[i]} ${salle[i]} ${date[i]}
 done
