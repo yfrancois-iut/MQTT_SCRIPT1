@@ -11,6 +11,10 @@ date=()
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
 while true; do
- test=`mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite`
- echo $test
+ valeurs_brutes=`mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite`
+#ajout_salle is variable in which is temporarly stored the room of the last MQTT output, jq treating the whole output to only keep the value of 
+#the room field. The array salle() is then incremented with the datat stored in ajout_salle.
+ ajout_salle=`echo $valeurs_brutes | jq '.room'`
+ salle+=($ajout_salle)
+ echo $salle
 done
