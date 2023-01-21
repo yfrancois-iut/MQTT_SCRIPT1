@@ -13,8 +13,8 @@ date=()
 while true; do
  valeurs_brutes=`mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite`
 #ajout_salle is variable in which is temporarly stored the room of the last MQTT output, jq treating the whole output to only keep the value of 
-#the room field. The array salle() is then incremented with the datat stored in ajout_salle.
- ajout_salle=`echo $valeurs_brutes | jq '.room'`
+#the room field. It is then treated with cut in order to remove the quotes. The array salle() is then incremented with the data stored in ajout_salle.
+ ajout_salle=`echo $valeurs_brutes | jq '.room' | cut -d '"' -f 2`
  salle+=($ajout_salle)
 #Same principle as for salle.
  ajout_valeur=`echo $valeurs_brutes | jq '.value'`
@@ -22,7 +22,8 @@ while true; do
 #Copy-pasted the formatting method of my previous script. The output of the date command is then stored in date() array.
  ajout_date=`date +%x-%X`
  date+=($ajout_date)
- echo ${salle}
- echo ${valeur}
- echo ${date}
+#This down below is a debugging feature that prints the three arrays to make sure that the previous commands do what they are supposed to do.
+ echo ${salle[*]}
+ echo ${valeur[*]}
+ echo ${date[*]}
 done
