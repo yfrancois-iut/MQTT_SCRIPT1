@@ -14,7 +14,25 @@ fonction_tableau1_site() {
  ligne=$(echo '<td class ="gauche">'$luminosite'</td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
  sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne\n\t\t\t\t</tr>#" $fichier
 }
-
+fonction_tableau2_site() {
+ m=$1
+ min=$2
+ max=$3
+ m1=$4
+ min1=$5
+ max1=$6
+ m2=$7
+ min2=$8
+ max2=$9
+ echo $m1 $min1 $max1 "\n" $m2 $min2 $max2
+ fichier='./capteurs.html'
+ balisedebut='<!--Tab2debut-->'
+ balisefin='<!--Tab2fin-->'
+ lignea=$(echo '<th>E101</th> <td class ="gauche">'$m1'</td> <td class="droite">'$min1'</td> <td class="droite">'$max1'</td>')
+ ligneb=$(echo '<th>E102</th> <td class ="gauche">'$m2'</td> <td class="droite">'$min2'</td> <td class="droite">'$max2'</td>')
+ lignec=$(echo '<th>Global</th> <td class ="gauche">'$m'</td> <td class="droite">'$min'</td> <td class="droite">'$max'</td>')
+ perl -0777 -i -pe "s|<!--Tab2debut-->.*<!--Tab2fin-->|<!--Tab2debut-->\n\t\t\t\t<tr>\n\t\t\t\t\t$lignea\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligneb\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$lignec\n\t\t\t\t</tr><!--Tab2fin-->|s" $fichier
+}
 #Initializing the arrays that are going to hold key values for the website.
 salle=()
 valeur=()
@@ -70,6 +88,18 @@ while true; do
  echo "Voici la somme : $somme"
  let moyenne=$somme_moyenne/$somme
  echo "Voici la moyenne : $moyenne"
+ if [ ${salle[i]}=="E101" ]; then
+  moyenne_e101=$moyenne
+  minimum_e101=$minimum
+  maximum_e101=$maximum
+ else
+  moyenne_e102=$moyenne
+  minimum_e102=$minimum
+  maximum_e102=$maximum
+ fi
+#Calling a function that takes in 3 parameters/arguments in order to integrate them to an HTML table
  fonction_tableau1_site ${valeur[i]} ${salle[i]} ${date[i]}
+ fonction_tableau2_site $moyenne $minimum $maximum $moyenne_e101 $minimum_e101 $maximum_e101 $moyenne_e102 $minimum_e102 $maximum_e102
+#The curl function is used to upload the modified HTML file *capteurs.html* via FTP towards the website
  curl -u "4183242_yfrancois:Tu76./gh" -T ./capteurs.html ftp://yfrancois.atwebpages.com/SAE15/capteurs.html
 done
