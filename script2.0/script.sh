@@ -12,7 +12,7 @@ fonction_tableau1_site() {
  fichier='./capteurs.html'
  balise='<!--Tab1-->'
  ligne=$(echo '<td class ="gauche">'$luminosite'</td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
- sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t\t$ligne#" $fichier
+ sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne\n\t\t\t\t</tr>#" $fichier
 }
 
 #Initializing the arrays that are going to hold key values for the website.
@@ -71,4 +71,5 @@ while true; do
  let moyenne=$somme_moyenne/$somme
  echo "Voici la moyenne : $moyenne"
  fonction_tableau1_site ${valeur[i]} ${salle[i]} ${date[i]}
+ curl -u "4183242_yfrancois:Tu76./gh" -T ./capteurs.html ftp://yfrancois.atwebpages.com/SAE15/capteurs.html
 done
