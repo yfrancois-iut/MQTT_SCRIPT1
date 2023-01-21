@@ -27,11 +27,14 @@ while true; do
  echo ${salle[@]}
  echo ${valeur[@]}
  echo ${date[@]}
+#Loop that iterates through every element of the valeur[] array.
  for champ in ${valeur[@]}; do
+#Initalizing maximum and minimum
   if [ $maximum -eq 0 ] || [ $minimum -eq 0 ];then
    maximum=$champ
    minimum=$champ
   fi
+#Updating maximum and minimum by going through every element each time we enter the loop.
   if [ $champ -gt $maximum ];then
    maximum=$champ
   fi
@@ -39,11 +42,14 @@ while true; do
    minimum=$champ
   fi
  done
+#Initalizing and index that is used to get the current last value of the valeur[] array. ${#valeur[@]} gives out the total number of values in the array.
  if [ ${#valeur[@]} -gt 1 ];then
   let i=i+1
  else
   i=0
  fi
+#All 'echos" are meant for debugging and visualizing the process of the script and the values outputed.
+#Calculus of moyenne (=average) and somme_moyenne(=the sum of every value in the array in order to calculate the average.
  echo "i = $i"
  let somme_moyenne=$somme_moyenne+${valeur[i]}
  echo "somme_moyenne : $somme_moyenne"
