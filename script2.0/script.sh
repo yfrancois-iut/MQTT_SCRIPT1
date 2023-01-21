@@ -16,5 +16,13 @@ while true; do
 #the room field. The array salle() is then incremented with the datat stored in ajout_salle.
  ajout_salle=`echo $valeurs_brutes | jq '.room'`
  salle+=($ajout_salle)
- echo $salle
+#Same principle as for salle.
+ ajout_valeur=`echo $valeurs_brutes | jq '.value'`
+ valeur+=($ajout_valeur)
+#Copy-pasted the formatting method of my previous script. The output of the date command is then stored in date() array.
+ ajout_date=`date +%x-%X`
+ date+=($ajout_date)
+ echo ${salle}
+ echo ${valeur}
+ echo ${date}
 done
