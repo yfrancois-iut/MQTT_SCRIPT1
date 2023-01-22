@@ -11,7 +11,7 @@ fonction_tableau1_site() {
  date=$3
  fichier='./capteurs.html'
  balise='<!--Tab1-->'
- ligne=$(echo '<td class ="gauche">'$luminosite'</td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
+ ligne=$(echo '<td class ="gauche">'$luminosite' lux </td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
  sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne\n\t\t\t\t</tr>#" $fichier
 }
 fonction_tableau2_site() {
@@ -27,9 +27,9 @@ fonction_tableau2_site() {
  fichier='./capteurs.html'
  balisedebut='<!--Tab2debut-->'
  balisefin='<!--Tab2fin-->'
- ligne1=$(echo '<th>E101</th> <td class ="gauche">'$m1'</td> <td class="droite">'$min1'</td> <td class="droite">'$max1'</td>')
- ligne2=$(echo '<th>E102</th> <td class ="gauche">'$m2'</td> <td class="droite">'$min2'</td> <td class="droite">'$max2'</td>')
- ligne3=$(echo '<th>Global</th> <td class ="gauche">'$m'</td> <td class="droite">'$min'</td> <td class="droite">'$max'</td>')
+ ligne1=$(echo '<th>E101</th> <td class ="gauche">'$m1' lux </td> <td class="droite">'$min1' lux </td> <td class="droite">'$max1' lux </td>')
+ ligne2=$(echo '<th>E102</th> <td class ="gauche">'$m2' lux </td> <td class="droite">'$min2' lux </td> <td class="droite">'$max2' lux </td>')
+ ligne3=$(echo '<th>Global</th> <td class ="gauche">'$m' lux </td> <td class="droite">'$min' lux </td> <td class="droite">'$max' lux </td>')
  perl -0777 -i -pe "s|<!--Tab2debut-->.*<!--Tab2fin-->|<!--Tab2debut-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne1\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne2\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne3\n\t\t\t\t</tr><!--Tab2fin-->|s" $fichier
 }
 #Initializing the arrays that are going to hold key values for the website.
@@ -40,6 +40,15 @@ let j=k=i=somme_moyenne=somme_e102=somme_e101=moyenne_e101=moyenne_e102=somme=ma
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
 while true; do
+ if [ "$i" -ge "5" ] || [ "$maximum" -eq "0" ];then
+  echo 'YES'
+  cat ./capteurs_debut.html > capteurs.html
+  curl -u "4183242_yfrancois:Tu76./gh" -T ./capteurs.html ftp://yfrancois.atwebpages.com/SAE15/capteurs.html
+  salle=()
+  valeur=()
+  date=()
+  let j=k=i=somme_moyenne=somme_e102=somme_e101=moyenne_e101=moyenne_e102=somme=maximum=minimum=minimum_e101=minimum_e102=maximum_e101=maximum_e102=0
+ fi
  valeurs_brutes=`mosquitto_sub -C 1 -h iot.iut-blagnac.fr -u student -P student -t iut/bate/etage1/+/luminosite`
 #ajout_salle is variable in which is temporarly stored the room of the last MQTT output, jq treating the whole output to only keep the value of 
 #the room field. It is then treated with cut in order to remove the quotes. The array salle() is then incremented with the data stored in ajout_salle.
@@ -80,7 +89,7 @@ while true; do
 #Calculus of moyenne (=average) and somme_moyenne(=the sum of every value in the array in order to calculate the average.
  let somme_moyenne=$somme_moyenne+${valeur[i]}
  somme=${#valeur[@]}
- let moyenne=$(echo "scale=2;$somme_moyenne/$somme" | bc)
+ moyenne=$(echo "scale=2;$somme_moyenne/$somme" | bc)
  if [[ "${salle[i]}" == "E101" ]]; then
   valeur_e101=${valeur[i]}
   if [ "$j" = "0" ];then
