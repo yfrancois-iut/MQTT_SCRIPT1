@@ -24,20 +24,19 @@ fonction_tableau2_site() {
  m2=$7
  min2=$8
  max2=$9
- echo $m1 $min1 $max1 "\n" $m2 $min2 $max2
  fichier='./capteurs.html'
  balisedebut='<!--Tab2debut-->'
  balisefin='<!--Tab2fin-->'
- lignea=$(echo '<th>E101</th> <td class ="gauche">'$m1'</td> <td class="droite">'$min1'</td> <td class="droite">'$max1'</td>')
- ligneb=$(echo '<th>E102</th> <td class ="gauche">'$m2'</td> <td class="droite">'$min2'</td> <td class="droite">'$max2'</td>')
- lignec=$(echo '<th>Global</th> <td class ="gauche">'$m'</td> <td class="droite">'$min'</td> <td class="droite">'$max'</td>')
- perl -0777 -i -pe "s|<!--Tab2debut-->.*<!--Tab2fin-->|<!--Tab2debut-->\n\t\t\t\t<tr>\n\t\t\t\t\t$lignea\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligneb\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$lignec\n\t\t\t\t</tr><!--Tab2fin-->|s" $fichier
+ ligne1=$(echo '<th>E101</th> <td class ="gauche">'$m1'</td> <td class="droite">'$min1'</td> <td class="droite">'$max1'</td>')
+ ligne2=$(echo '<th>E102</th> <td class ="gauche">'$m2'</td> <td class="droite">'$min2'</td> <td class="droite">'$max2'</td>')
+ ligne3=$(echo '<th>Global</th> <td class ="gauche">'$m'</td> <td class="droite">'$min'</td> <td class="droite">'$max'</td>')
+ perl -0777 -i -pe "s|<!--Tab2debut-->.*<!--Tab2fin-->|<!--Tab2debut-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne1\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne2\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne3\n\t\t\t\t</tr><!--Tab2fin-->|s" $fichier
 }
 #Initializing the arrays that are going to hold key values for the website.
 salle=()
 valeur=()
 date=()
-let i=somme_moyenne=somme=maximum=minimum=0
+let j=k=i=somme_moyenne=somme_e102=somme_e101=moyenne_e101=moyenne_e102=somme=maximum=minimum=minimum_e101=minimum_e102=maximum_e101=maximum_e102=0
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
 while true; do
@@ -79,24 +78,44 @@ while true; do
  fi
 #All 'echos" are meant for debugging and visualizing the process of the script and the values outputed.
 #Calculus of moyenne (=average) and somme_moyenne(=the sum of every value in the array in order to calculate the average.
- echo "i = $i"
  let somme_moyenne=$somme_moyenne+${valeur[i]}
- echo "somme_moyenne : $somme_moyenne"
- echo "Voici le maximum : $maximum"
- echo "Voici le minimum : $minimum"
  somme=${#valeur[@]}
- echo "Voici la somme : $somme"
- let moyenne=$somme_moyenne/$somme
- echo "Voici la moyenne : $moyenne"
- if [ ${salle[i]}=="E101" ]; then
-  moyenne_e101=$moyenne
-  minimum_e101=$minimum
-  maximum_e101=$maximum
- else
-  moyenne_e102=$moyenne
-  minimum_e102=$minimum
-  maximum_e102=$maximum
+ let moyenne=$(echo "scale=2;$somme_moyenne/$somme" | bc)
+ if [[ "${salle[i]}" == "E101" ]]; then
+  valeur_e101=${valeur[i]}
+  if [ "$j" = "0" ];then
+   maximum_e101=$valeur_e101
+   minimum_e101=$valeur_e101
+  fi
+  if [ $valeur_e101 -gt $maximum_e101 ];then
+   maximum_e101=$valeur_e101
+  fi
+  if [ $valeur_e101 -lt $minimum_e101 ];then
+   minimum_e101=$valeur_e101
+  fi
+  let j=j+1
+  somme_e101=$(echo "scale=2;$somme_e101+$valeur_e101" | bc)
+  moyenne_e101=$(echo "scale=2;$somme_e101/$j" | bc)
  fi
+ if [[ "${salle[i]}" == "E102" ]]; then
+  valeur_e102=${valeur[i]}
+  if [ "$k" = "0" ];then
+   maximum_e102=$valeur_e102
+   minimum_e102=$valeur_e102
+  fi
+  if [ $valeur_e102 -gt $maximum_e102 ];then
+   maximum_e102=$valeur_e102
+  fi
+  if [ $valeur_e102 -lt $minimum_e102 ];then
+   minimum_e102=$valeur_e102
+  fi
+  let k=k+1
+  somme_e102=$(echo "scale=2;$somme_e102+$valeur_e102" | bc)
+  moyenne_e102=$(echo "scale=2;$somme_e102/$k" | bc)
+ fi
+ echo 'E102' $moyenne_e102 $minimum_e102 $maximum_e102
+ echo 'E101' $moyenne_e101 $minimum_e101 $maximum_e101
+ echo 'global' $moyenne $minimum $maximum
 #Calling a function that takes in 3 parameters/arguments in order to integrate them to an HTML table
  fonction_tableau1_site ${valeur[i]} ${salle[i]} ${date[i]}
  fonction_tableau2_site $moyenne $minimum $maximum $moyenne_e101 $minimum_e101 $maximum_e101 $moyenne_e102 $minimum_e102 $maximum_e102
