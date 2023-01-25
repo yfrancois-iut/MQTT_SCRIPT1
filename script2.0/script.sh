@@ -4,17 +4,28 @@
 #Parsing json from broker with jq and storing data inside lists allows for easier explanations and access to curl towards the HTML page.
 #Mr. FRANCOIS
 
-#Fonction ajoutant les valeurs instantanées au sein du premier tableau
+#Declaring a function that edits the content of the first table
 fonction_tableau1_site() {
+#Attributing the value of the arguments passed in the function as local variables
  luminosite=$1
  salle=$2
  date=$3
+#Naming the file destination for sed
  fichier='./capteurs.html'
+#Naming the flag that will help sed orientate itself in the HMTL file and allow for dynamic table editing.
  balise='<!--Tab1-->'
+#ligne is the variable that stores the table row with the actualized variables passed as arguments and stored in the previously mentionned local variables.
  ligne=$(echo '<td class ="gauche">'$luminosite' lux </td> <td class="droite">'$salle'</td> <td class="droite">'$date'</td>')
+#sed is a stream editor. With the option -i, we edit the HTML file without printing to STDOUT.
+#s is for substitue. # are alternative delimeters that we are force to use since HTML uses a lot of / which are the default delimiters for sed.
+#Our command here substitues balise with what follows, which is the balise itself, followed by formatting characters :
+#\n for newline ; \t for tabulation : we essentially print ligne in between HTML tags (here <td> and </td>)  with proper indentation.
+#Lastly, the variable containing the to to be modified file address is placed at the end of the command. 
  sed -i "s#$balise#<!--Tab1-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne\n\t\t\t\t</tr>#" $fichier
 }
+#Declaring a second function that edits the content of the second table
 fonction_tableau2_site() {
+#Attributing the value of the arguments passed in the function as local variables
  m=$1
  min=$2
  max=$3
@@ -24,24 +35,35 @@ fonction_tableau2_site() {
  m2=$7
  min2=$8
  max2=$9
+#Naming the file destination for sed
  fichier='./capteurs.html'
+#Naming the first flag that will help perl orientate itself in the HMTL file and allow for dynamic table editing.
  balisedebut='<!--Tab2debut-->'
+#Naming the second flag that will help perl orientate itself in the HMTL file and allow for dynamic table editing.
  balisefin='<!--Tab2fin-->'
+#ligne1-3 are the variables that store the table rows with the actualized variables passed as arguments and stored in the previously mentionned local variables.
  ligne1=$(echo '<th>E101</th> <td class ="gauche">'$m1' lux </td> <td class="droite">'$min1' lux </td> <td class="droite">'$max1' lux </td>')
  ligne2=$(echo '<th>E102</th> <td class ="gauche">'$m2' lux </td> <td class="droite">'$min2' lux </td> <td class="droite">'$max2' lux </td>')
  ligne3=$(echo '<th>Global</th> <td class ="gauche">'$m' lux </td> <td class="droite">'$min' lux </td> <td class="droite">'$max' lux </td>')
+#perl is an interpretor and programming language that we use here as a stream editor like sed, except it is less tideous to replace a range of characters contained by two strings.
+#-0 allows for slurping the file (the 777 following is a big octal number that allows for storing most files passed as an argument.)
+#-i ,like in sed, redirects the output to the file. -pe is a combination of two parameters.
+#-e makes the following content as to behave like a script on its own, allowing us to not call a perl script but to write it directly in our bash script.
+#-p executes the script.
+#s is for substitution like in sed. We also use an alternative separator for the same reasons as with sed. Here | instead of /.
+#.* allows for matching any characters between the two HTML tags/comments, characters which are going to be replaced by the following expression.
  perl -0777 -i -pe "s|<!--Tab2debut-->.*<!--Tab2fin-->|<!--Tab2debut-->\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne1\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne2\n\t\t\t\t</tr>\n\t\t\t\t<tr>\n\t\t\t\t\t$ligne3\n\t\t\t\t</tr><!--Tab2fin-->|s" $fichier
 }
-#Initializing the arrays that are going to hold key values for the website.
+#Initializing the arrays and variables that are going to hold key values for the website.
 salle=()
 valeur=()
 date=()
 let j=k=i=somme_moyenne=somme_e102=somme_e101=moyenne_e101=moyenne_e102=somme=maximum=minimum=minimum_e101=minimum_e102=maximum_e101=maximum_e102=0
 #This is an infinite loop that begins with a mosquitto_sub. It only lasts for one message so we can work with the data
 #without being blocked by the mosquitto process. Once we treated the data gathered, it will come back to the subscribe stage/phase.
+#The first if loop is about resetting the webpage at every startup of the script, and everytime the index i reaches a certain desired value.
 while true; do
  if [ "$i" -ge "5" ] || [ "$maximum" -eq "0" ];then
-  echo 'YES'
   cat ./capteurs_debut.html > capteurs.html
   curl -u "4183242_yfrancois:Tu76./gh" -T ./capteurs.html ftp://yfrancois.atwebpages.com/SAE15/capteurs.html
   salle=()
@@ -86,12 +108,16 @@ while true; do
   i=0
  fi
 #All 'echos" are meant for debugging and visualizing the process of the script and the values outputed.
-#Calculus of moyenne (=average) and somme_moyenne(=the sum of every value in the array in order to calculate the average.
+#Calculus of moyenne (=average) and somme_moyenne(=the sum of every value in the array) in order to calculate the average.
  let somme_moyenne=$somme_moyenne+${valeur[i]}
  somme=${#valeur[@]}
+#Passing the mathematical division to the bc interpreter with scale=2 in order to have a more precise average : rounded to 2 decimal places.
  moyenne=$(echo "scale=2;$somme_moyenne/$somme" | bc)
+#If conditions in order to have separate stats for each room. The math is the same as for the global values, except for the index that is used.
+#The said indexes (specific for each room, j or k) are only incremented when entering the room loop they are linked to.
  if [[ "${salle[i]}" == "E101" ]]; then
   valeur_e101=${valeur[i]}
+#Initializing the maximum and minimum to be the first value of the room.
   if [ "$j" = "0" ];then
    maximum_e101=$valeur_e101
    minimum_e101=$valeur_e101
@@ -103,7 +129,7 @@ while true; do
    minimum_e101=$valeur_e101
   fi
   let j=j+1
-  somme_e101=$(echo "scale=2;$somme_e101+$valeur_e101" | bc)
+  somme_e101=$somme_e101+$valeur_e101
   moyenne_e101=$(echo "scale=2;$somme_e101/$j" | bc)
  fi
  if [[ "${salle[i]}" == "E102" ]]; then
@@ -119,9 +145,10 @@ while true; do
    minimum_e102=$valeur_e102
   fi
   let k=k+1
-  somme_e102=$(echo "scale=2;$somme_e102+$valeur_e102" | bc)
+  somme_e102=$somme_e102+$valeur_e102
   moyenne_e102=$(echo "scale=2;$somme_e102/$k" | bc)
  fi
+#Debugging echos
  echo 'E102' $moyenne_e102 $minimum_e102 $maximum_e102
  echo 'E101' $moyenne_e101 $minimum_e101 $maximum_e101
  echo 'global' $moyenne $minimum $maximum
