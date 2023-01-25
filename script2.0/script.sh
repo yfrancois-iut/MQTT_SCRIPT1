@@ -129,7 +129,8 @@ while true; do
    minimum_e101=$valeur_e101
   fi
   let j=j+1
-  somme_e101=$somme_e101+$valeur_e101
+  let somme_e101=$somme_e101+$valeur_e101
+  echo "compteur :" $j "somme : " $somme_e101
   moyenne_e101=$(echo "scale=2;$somme_e101/$j" | bc)
  fi
  if [[ "${salle[i]}" == "E102" ]]; then
@@ -145,7 +146,7 @@ while true; do
    minimum_e102=$valeur_e102
   fi
   let k=k+1
-  somme_e102=$somme_e102+$valeur_e102
+  let somme_e102=$somme_e102+$valeur_e102
   moyenne_e102=$(echo "scale=2;$somme_e102/$k" | bc)
  fi
 #Debugging echos
