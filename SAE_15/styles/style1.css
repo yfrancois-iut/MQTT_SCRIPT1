@@ -1,10 +1,14 @@
 /*Balises générales concernant l'ensemble des pages*/
+table
+{
+  align-content: center;
+}
 body
 {
 	padding-top: 115px;
 	padding-bottom: 50px;
 	margin : 0;
-	background-color: #e7e1ef;
+	background-color: #FFFF;
 }
 
 header 
@@ -12,7 +16,7 @@ header
   position: fixed; 
   top: 0; 
   width: 100%; 
-  background-color: #475236;
+  background-color:#54585a;
   color : white;
 }
 
@@ -27,7 +31,7 @@ nav ul li
 {
   overflow: hidden;
   float: left;
-  width: 33.333%;
+  width: 50%;
   list-style: none;
 }
 
@@ -75,10 +79,9 @@ ul li h2
 aside#last 
 {
   padding-top: 25px;  
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 5px;
-  clear: both;
+  padding-bottom: 10px;
 }
 
 aside a
@@ -93,6 +96,12 @@ aside img
   height:31px;
 }
 
+.image_responsive2
+{
+  width:120px;
+  height:72px;
+}
+
 footer 
 {
   position: fixed;
@@ -101,7 +110,7 @@ footer
   width: 100%;
   padding-bottom: 2px;
   padding: 0px;
-  background-color: #475236;
+  background-color: #54585a;
   color: white;
   text-align: center;
 }
@@ -313,6 +322,11 @@ font-size: x-large;
   font-size: x-large;
 }
 
+.capteurs h2
+{
+  font-size: x-large;
+  text-align: center;
+}
 /*Mentions légales*/
 .mentions_legales
 {
@@ -461,18 +475,6 @@ ol li::marker
     overflow: hidden;
   }
 
-/*Aboutme RWD*/
-  .aboutme
-  {
-    padding-top: 140px;
-    font-size: large;
-  }
-
-  .aboutme h2
-  {
-    font-size: x-large;
-  }
-
 /*capteurs RWD*/
   .capteurs
   {
@@ -482,30 +484,5 @@ ol li::marker
 
   .capteurs h2
   {
-    font-size: x-large;
+    font-size: medium;
   }
-
-/*Aspect technique RWD*/
-  .Aspect_technique
-  {
-    padding-top: 120px;
-    font-size: large;
-  }
-
-  .Aspect_technique h2
-  {
-    font-size: x-large;
-  }
-
-/*Mentions légales RWD*/
-  .mentions_legales
-  {
-    padding-top: 110px;
-    font-size: large;
-  }
-
-  .mentions_legales h2
-  {
-    font-size: x-large;
-  }
-}
