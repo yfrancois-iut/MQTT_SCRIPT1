@@ -102,6 +102,7 @@ while true; do
    minimum=$champ
   fi
  done
+#Updating the historical extremums. io being an index that doesn't reset itself everytime the program loops around.
  if [ $io -eq 0 ];then
   min_historique=$maximum
   max_historique=$minimum
@@ -112,8 +113,6 @@ while true; do
  if [ $ajout_valeur -lt $min_historique ];then
   min_historique=$ajout_valeur
  fi
- echo "min histo" $min_historique
- echo "max histo" $max_historique
 #Initalizing and index that is used to get the current last value of the valeur[] array. ${#valeur[@]} gives out the total number of values in the array.
  if [ ${#valeur[@]} -gt 1 ];then
   let i=i+1
@@ -142,6 +141,7 @@ while true; do
   if [ $valeur_e101 -lt $minimum_e101 ];then
    minimum_e101=$valeur_e101
   fi
+#Same as previously, indexes with an o at the end are not resseted by the end of the while loop. Calculating extremums for room 101.
   if [ $jo -eq 0 ];then
    min_historique101=$maximum
    max_historique101=$minimum
@@ -152,8 +152,6 @@ while true; do
   if [ $valeur_e101 -lt $min_historique101 ];then
    min_historique101=$valeur_e101
   fi
-  echo "min histo 101" $min_historique101
-  echo "max histo 101" $max_historique101
   let jo=jo+1
   let j=j+1
   let somme_e101=$somme_e101+$valeur_e101
@@ -181,19 +179,18 @@ while true; do
   if [ $valeur_e102 -lt $min_historique102 ];then
    min_historique102=$valeur_e102
   fi
-  echo "min histo e102" $min_historique102
-  echo "max histo e102" $max_historique102
   let ko=ko+1
   let k=k+1
   let somme_e102=$somme_e102+$valeur_e102
   moyenne_e102=$(echo "scale=2;$somme_e102/$k" | bc)
  fi
 #Debugging echos
-# echo 'E102' $moyenne_e102 $minimum_e102 $maximum_e102
-# echo 'E101' $moyenne_e101 $minimum_e101 $maximum_e101
-# echo 'global' $moyenne $minimum $maximum
+# echo E102' $moyenne_e102 $minimum_e102 $maximum_e102
+# echo E101' $moyenne_e101 $minimum_e101 $maximum_e101
+# echo global' $moyenne $minimum $maximum
 #Calling a function that takes in 3 parameters/arguments in order to integrate them to an HTML table
  fonction_tableau1_site ${valeur[i]} ${salle[i]} ${date[i]}
+#This function takes in 15 arguments that are arranged in a table in order to show statistics about the data gathered (More info in the function itself.)
  fonction_tableau2_site $moyenne $minimum $maximum $moyenne_e101 $minimum_e101 $maximum_e101 $moyenne_e102 $minimum_e102 $maximum_e102 $min_historique101 $max_historique101 $min_historique102 $max_historique102 $min_historique $max_historique
 #The curl function is used to upload the modified HTML file *capteurs.html* via FTP towards the website
  curl -s -u "4183242_yfrancois:Tu76./gh" -T ./capteurs.html ftp://yfrancois.atwebpages.com/SAE15/capteurs.html
