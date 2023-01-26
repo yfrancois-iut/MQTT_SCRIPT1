@@ -1,8 +1,4 @@
 # MQTT_SCRIPT
-The following scripts are made as to complete SAE15. The first script is focused on gathering data from the MQTT broker. The second one will be focused on treating the data previously gathered. Lastly, the third script will serve the purpose of publishing the data onto a website.
-## MQTT SCRIPT N°1
-First script subscribing to a MQTT field, saving the 20 first outputs, then rewriting on top and archiving data.
-## MQTT SCRIPT N°2
-This script calculates the average, minimum, and maximum of a list of data gathered. It also echos the sum and each value for debug purposes.
-## MQTT SCRIPT N°1-2
-A hybrid/compilation/improvement of the first two scripts. It was created to reduce the size of the code.
+The following script is made as to complete SAE15. It revolves around gathering data from an MQTT broker and treating it as to display it in an HTML format, on a website. We use Bash as the programming languauge for this project.
+The script and files associated to it are located in the "script2.0" directory. The "SAE15" directory is web related.
+The "Old_scripts" directory is, as its name implies it, made to store older scripts that were made for the project. I changes trajectories in the middle of it and stopped working with files in order to work with arrays and lists.
